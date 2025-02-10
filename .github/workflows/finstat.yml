@@ -22,7 +22,7 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v1.2.0
         with:
-          host: ec2-user@ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+          host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
           username: maneet
           key: ${{ secrets.KEY }}
           script: whoami
