@@ -16,9 +16,4 @@ jobs:
         uses: actions/checkout@v4
 
       - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          username: ubuntu
-          key: ${{ secrets.PASSWORD }}
-          script: whoami
+        run: echo "Hello, ${{ secrets.PASSWORD  }}."
