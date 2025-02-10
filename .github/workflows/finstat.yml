@@ -15,11 +15,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup SSH Key
-        run: |
-          echo "${{ secrets.AWS_PEM_FILE }}" | base64 --decode > key.pem
-          chmod 600 key.pem
-
-      - name: Connect to EC2 and Deploy
-        run: |
-          ssh -i key.pem ubuntu@ec2-51-20-145-99.eu-north-1.compute.amazonaws.com "echo Connected to EC2"
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+          username: ubuntu
+          key: ${{ secrets.PASSWORD }}
+          script: whoami
