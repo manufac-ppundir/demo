@@ -7,10 +7,6 @@ on:
         description: 'Environment to deploy to'
         required: true
         default: 'main'
-        type: choice
-        options:
-          - main
-          - production
 
 jobs:
   build:
@@ -23,6 +19,6 @@ jobs:
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          username: maneet
-          password: ${{ secrets.PASSWORD }}
+          username: ubuntu
+          key: ${{ secrets.PASSWORD }}
           script: whoami
