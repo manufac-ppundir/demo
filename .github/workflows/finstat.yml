@@ -25,7 +25,7 @@ jobs:
       #     script: whoami
 
       - name: multiple command
-        uses: appleboy/ssh-action@master
+        uses: fifsky/ssh-action@master
         with:
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
           username: maneet
