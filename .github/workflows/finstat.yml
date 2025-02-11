@@ -24,11 +24,15 @@ jobs:
       #     port: 22
       #     script: whoami
 
+      - name: Setup SSH Key
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
       - name: multiple command
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
           username: maneet
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
           script: whoami
