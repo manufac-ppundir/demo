@@ -24,9 +24,11 @@ jobs:
       #     port: 22
       #     script: whoami
 
-      - name: SSH into EC2 and deploy 
-        uses: appleboy/ssh-action@master 
-        with: 
+      - name: multiple command
+        uses: appleboy/ssh-action@v1.0.3
+        with:
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          username: ec2-user
-          key: ${{ secrets.PASSWORD }} 
+          username: maneet
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: whoami
