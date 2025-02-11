@@ -15,11 +15,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+      # - name: executing remote ssh commands using ssh key
+      #   uses: appleboy/ssh-action@v1.2.0
+      #   with:
+      #     host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+      #     username: ubuntu
+      #     key: ${{ secrets.PASSWORD }}
+      #     port: 22
+      #     script: whoami
+
+      - name: SSH into EC2 and deploy 
+        uses: appleboy/ssh-action@master 
+        with: 
+          host: 22 
           username: ubuntu
-          key: ${{ secrets.PASSWORD }}
-          port: 22
-          script: whoami
+          key: ${{ secrets.PASSWORD }} 
