@@ -31,7 +31,7 @@ jobs:
             cd /tmp
             ls -a
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          user: root
+          user: ec2-user
           key: ${{ secrets.SSH_PRIVATE_KEY}}
         # uses: appleboy/ssh-action@v1.1.0
         # with:
