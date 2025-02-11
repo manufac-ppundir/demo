@@ -25,10 +25,18 @@ jobs:
       #     script: whoami
 
       - name: multiple command
-        uses: appleboy/ssh-action@v1.1.0
+        uses: fifsky/ssh-action@master
         with:
+          command: |
+            cd /tmp
+            ls -a
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          username: maneet
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
-          script: whoami
+          user: root
+          key: ${{ secrets.SSH_PRIVATE_KEY}}
+        # uses: appleboy/ssh-action@v1.1.0
+        # with:
+        #   host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+        #   username: maneet
+        #   key: ${{ secrets.SSH_PRIVATE_KEY }}
+        #   port: 22
+        #   script: whoami
