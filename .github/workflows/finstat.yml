@@ -22,4 +22,4 @@ jobs:
           username: ubuntu
           key: ${{ secrets.PASSWORD }}
           port: 22
-          run: echo "Hello, ${{ secrets.PASSWORD  }}."
+          script: whoami
