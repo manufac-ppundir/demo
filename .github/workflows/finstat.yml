@@ -12,28 +12,54 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      # - name: executing remote ssh commands using ssh key
-      #   uses: appleboy/ssh-action@v1.2.0
-      #   with:
-      #     host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-      #     username: ubuntu
-      #     key: ${{ secrets.PASSWORD }}
-      #     port: 22
-      #     script: whoami
-
-      - name: Setup SSH Key
+      - uses: actions/checkout@v2 
+      - name: Build & Deploy
+        env:
+            PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+            HOSTNAME: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+            USER_NAME: maneet
+      
         run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER_NAME}@${HOSTNAME} '
 
-      - name: multiple command
-        uses: appleboy/ssh-action@v1.2.0
-        with:
-          host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-          username: maneet
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: whoami
+              whoami
+              # Now we have got the access of EC2 and we will start the deploy .
+              # cd /home/ubuntu/<PROJECT_DIRECTORY> &&
+              # git checkout dev &&
+              # git fetch --all &&
+              # git reset --hard origin/dev &&
+              # git pull origin dev &&
+              # sudo npm i &&
+              # sudo npm run build &&
+              # sudo pm2 stop ./dist/index.js &&
+              # sudo pm2 start ./dist/index.js
+              '
+
+
+    # steps:
+    #   - name: Checkout code
+    #     uses: actions/checkout@v4
+
+    #   # - name: executing remote ssh commands using ssh key
+    #   #   uses: appleboy/ssh-action@v1.2.0
+    #   #   with:
+    #   #     host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+    #   #     username: ubuntu
+    #   #     key: ${{ secrets.PASSWORD }}
+    #   #     port: 22
+    #   #     script: whoami
+
+    #   - name: Setup SSH Key
+    #     run: |
+    #       mkdir -p ~/.ssh
+    #       echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
+    #       chmod 600 ~/.ssh/id_rsa
+
+    #   - name: multiple command
+    #     uses: appleboy/ssh-action@v1.2.0
+    #     with:
+    #       host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
+    #       username: maneet
+    #       key: ${{ secrets.SSH_PRIVATE_KEY }}
+    #       script: whoami
