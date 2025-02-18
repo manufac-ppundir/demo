@@ -24,7 +24,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
         cp /home/ec2-user/finstat-staging-api.tar /home/ec2-user/deploy.tar
-        docker load -i /home/ec2-user/finstat-staging-api.tar
-        docker run -d --name finstat-staging-api-latest -p 1025:8000 finstat-staging-api:latest
+        docker load -i /home/ec2-user/deploy.tar
+        docker run -d --name deploy-latest -p 1025:8000 deploy:latest
         docker ps
         '
