@@ -20,11 +20,11 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        docker build -t testing-ci-cd:latest ./api
-        docker save -o ./testing-ci-cd.tar testing-ci-cd:latest
+        docker build -t finstat-api:latest ./api
+        docker save -o ./finstat-api.tar finstat-api:latest
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
-        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem testing-ci-cd.tar ${USER}@${HOST}:/home/ec2-user/
+        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem finstat-api.tar ${USER}@${HOST}:/home/ec2-user/
     
     - name: Deploy to EC2
       env:
