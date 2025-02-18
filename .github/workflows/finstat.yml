@@ -21,7 +21,6 @@ jobs:
           host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
           username: ubuntu
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 22
           script: whoami
 
 
