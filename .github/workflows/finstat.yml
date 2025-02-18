@@ -1,4 +1,4 @@
-name: CI/CD Workflowsss
+name: CI/CD Workflow
 
 on:
   workflow_dispatch:
@@ -23,6 +23,8 @@ jobs:
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
+        docker stop finstat-staging-api-latest || true
+        docker rm finstat-staging-api-latest || true
         docker load -i /home/ec2-user/finstat-staging-api.tar
         docker run -d --name finstat-staging-api-latest -p 1025:8000 finstat-staging-api:latest
         docker ps
