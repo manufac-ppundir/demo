@@ -22,37 +22,6 @@ jobs:
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-        echo "Current directory: $(pwd)"
-        echo "Listing home directory:"
-        ls -la ~
-        echo "Installing Node.js..."
 
-        echo "Starting/restarting application..."
+        docker ps
         '
-
-    # steps:
-    #   - name: Checkout code
-    #     uses: actions/checkout@v4
-
-    #   # - name: executing remote ssh commands using ssh key
-    #   #   uses: appleboy/ssh-action@v1.2.0
-    #   #   with:
-    #   #     host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-    #   #     username: ubuntu
-    #   #     key: ${{ secrets.PASSWORD }}
-    #   #     port: 22
-    #   #     script: whoami
-
-    #   - name: Setup SSH Key
-    #     run: |
-    #       mkdir -p ~/.ssh
-    #       echo "${{ secrets.SSH_PRIVATE_KEY }}" | base64 --decode > ~/.ssh/id_rsa
-    #       chmod 600 ~/.ssh/id_rsa
-
-    #   - name: multiple command
-    #     uses: appleboy/ssh-action@v1.2.0
-    #     with:
-    #       host: ec2-51-20-145-99.eu-north-1.compute.amazonaws.com
-    #       username: maneet
-    #       key: ${{ secrets.SSH_PRIVATE_KEY }}
-    #       script: whoami
