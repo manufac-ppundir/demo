@@ -36,9 +36,9 @@ jobs:
         chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
-        docker stop finstat-staging-api-latest
-        docker rm finstat-staging-api-latest
-        docker load -i /home/ec2-user/finstat-staging-api.tar
-        docker run -d --name finstat-staging-api-latest -p 1025:8000 finstat-staging-api:latest
+        docker stop finstat-api-latest
+        docker rename finstat-api-latest finstat-api-backup
+        docker load -i /home/ec2-user/finstat-api.tar
+        docker run -d --name finstat-api-latest -p 1025:8000 finstat-api:latest
         docker ps
         '
