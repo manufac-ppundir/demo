@@ -26,12 +26,12 @@ jobs:
         USER: ${{ secrets.EC2_USER }}
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem && chmod 600 github-ec2.pem
-        scp -i github-ec2.pem testing-ci-cd.tar ${USER}@${HOST}:/home/ec2-user/
+        # scp -i github-ec2.pem testing-ci-cd.tar ${USER}@${HOST}:/home/ec2-user/
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
-        docker stop finstat-staging-api-latest
-        docker rm finstat-staging-api-latest
-        docker load -i /home/ec2-user/finstat-staging-api.tar
-        docker run -d --name finstat-staging-api-latest -p 1025:8000 finstat-staging-api:latest
+        # docker stop finstat-staging-api-latest
+        # docker rm finstat-staging-api-latest
+        # docker load -i /home/ec2-user/finstat-staging-api.tar
+        # docker run -d --name finstat-staging-api-latest -p 1025:8000 finstat-staging-api:latest
         docker ps
         '
