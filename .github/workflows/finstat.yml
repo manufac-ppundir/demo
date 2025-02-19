@@ -36,7 +36,7 @@ jobs:
         chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
-        docker stop testing-ci-cd-latest
+        docker stop testing-ci-cd-latest || true
         docker rm -f testing-ci-cd-backup || true
         docker rename testing-ci-cd-latest testing-ci-cd-backup
         docker load -i /home/ec2-user/testing-ci-cd.tar
