@@ -37,6 +37,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
         docker stop finstat-api-latest
+        docker rm -f finstat-api-backup
         docker rename finstat-api-latest finstat-api-backup
         docker load -i /home/ec2-user/finstat-api.tar
         docker run -d --name finstat-api-latest -p 1025:8000 finstat-api:latest
