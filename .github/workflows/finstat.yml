@@ -40,6 +40,6 @@ jobs:
         docker rm -f testing-ci-cd-backup || true
         docker rename testing-ci-cd-latest testing-ci-cd-backup
         docker load -i /home/ec2-user/testing-ci-cd.tar
-        docker run -d --name testing-ci-cd-latest -p 1025:8000 testing-ci-cd:latest
+        docker run -d --name testing-ci-cd-latest -p 1025:8080 testing-ci-cd:latest
         docker ps -a
         '
