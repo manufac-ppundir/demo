@@ -26,7 +26,7 @@ jobs:
     - name: Install sshpass
       run: sudo apt-get install -y sshpass
 
-    - name: Build Frontend and Copy dist to the server
+    - name: Create and remove backup
       env:
         PRIVATE_KEY: ${{ secrets.WORDPRESS_KEY }}
         HOST: ${{ secrets.WORDPRESS_HOST }}
@@ -36,6 +36,18 @@ jobs:
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+            
+            cd wp-content/themes/mh-magazine-lite/assets/
+            # rm -rf backupDist
+            # mv dist backupDist
             ls
-            whoami
         '
+    - name: Build Frontend and Copy dist to the server
+      env:
+        PRIVATE_KEY: ${{ secrets.WORDPRESS_KEY }}
+        HOST: ${{ secrets.WORDPRESS_HOST }}
+        USER: ${{ secrets.WORDPRESS_USER }}
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+      run: |
+        # yarn build
+        sshpass -p "$SSH_PASSWORD" scp -r ./dist22222 ${USER}@${HOST}:~/public_html/wp-content/themes/mh-magazine-lite/assets
