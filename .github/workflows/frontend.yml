@@ -36,11 +36,9 @@ jobs:
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-            pwd
             cd public_html/wp-content/themes/mh-magazine-lite/assets/
-            # rm -rf backupDist
-            # mv dist backupDist
-            ls
+            rm -rf backupDist
+            mv dist backupDist
         '
     - name: Build Frontend and Copy dist to the server
       env:
@@ -49,5 +47,5 @@ jobs:
         USER: ${{ secrets.WORDPRESS_USER }}
         SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
-        # yarn build
-        sshpass -p "$SSH_PASSWORD" scp -r ./dist22222 ${USER}@${HOST}:~/public_html/wp-content/themes/mh-magazine-lite/assets
+        yarn build
+        sshpass -p "$SSH_PASSWORD" scp -r ./dist ${USER}@${HOST}:~/public_html/wp-content/themes/mh-magazine-lite/assets
