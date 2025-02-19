@@ -36,8 +36,8 @@ jobs:
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
         sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
-            
-            cd wp-content/themes/mh-magazine-lite/assets/
+            pwd
+            cd public_html/wp-content/themes/mh-magazine-lite/assets/
             # rm -rf backupDist
             # mv dist backupDist
             ls
