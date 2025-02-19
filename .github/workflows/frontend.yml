@@ -23,15 +23,19 @@ jobs:
         node -v
         yarn -v
 
+    - name: Install sshpass
+      run: sudo apt-get install -y sshpass
+
     - name: Build Frontend and Copy dist to the server
       env:
         PRIVATE_KEY: ${{ secrets.WORDPRESS_KEY }}
         HOST: ${{ secrets.WORDPRESS_HOST }}
         USER: ${{ secrets.WORDPRESS_USER }}
+        SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
       run: |
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
-        ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
+        sshpass -p "$SSH_PASSWORD" ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
             ls
             whoami
         '
