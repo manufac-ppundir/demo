@@ -1,4 +1,4 @@
-name: CI/CD Workflow
+name: Backend CI/CD Workflow
 
 on:
   workflow_dispatch:
@@ -20,11 +20,11 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        docker build -t testing-ci-cd:latest ./api
-        docker save -o ./testing-ci-cd.tar testing-ci-cd:latest
+        docker build -t finstat-api:latest ./api
+        docker save -o ./finstat-api.tar finstat-api:latest
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
-        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem testing-ci-cd.tar ${USER}@${HOST}:/home/ec2-user/
+        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem finstat-api.tar ${USER}@${HOST}:/home/ec2-user/
     
     - name: Deploy to EC2
       env:
@@ -36,42 +36,26 @@ jobs:
         chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
         # Remove old backup image if exists
-        docker rmi testing-ci-cd:backup || true
+        docker rmi finstat-api:backup || true
 
         # Promote current latest to backup
-        docker tag testing-ci-cd:latest testing-ci-cd:backup || true
+        docker tag finstat-api:latest finstat-api:backup || true
 
         # Remove old backup container if exists
-        docker rm -f testing-ci-cd-backup || true
+        docker rm -f finstat-api-backup || true
 
         # Promote current container to backup
-        docker stop testing-ci-cd-latest || true
-        docker rename testing-ci-cd-latest testing-ci-cd-backup || true
+        docker stop finstat-api-latest || true
+        docker rename finstat-api-latest finstat-api-backup || true
 
         # Load new image as latest
-        docker load -i /home/ec2-user/testing-ci-cd.tar
+        docker load -i /home/ec2-user/finstat-api.tar
       
         # Start new container from loaded image
-        docker run -d --name testing-ci-cd-latest -p 1025:8000 testing-ci-cd:latest
+        docker run -d --name finstat-api-latest -p 1025:8000 finstat-api:latest
 
         # # Backup current image
-        # docker tag testing-ci-cd:latest testing-ci-cd:backup || true
-
-        # # Stop and Backup current container
-        # docker stop testing-ci-cd-latest || true
-        # docker rename testing-ci-cd-latest testing-ci-cd-backup || true
-
-        # # Load new image
-        # docker load -i /home/ec2-user/testing-ci-cd.tar
-
-        # # Start new container
-        # docker run -d --name testing-ci-cd-latest -p 8000:8000 testing-ci-cd:latest
-
-        # # Cleanup old backup container (if exists)
-        # docker rm -f testing-ci-cd-backup || true
-        
-        # # Cleanup old backup image (if exists)
-        # docker rmi testing-ci-cd:backup || true
+        # docker tag finstat-api:latest finstat-api:backup || true
         
         docker ps -a
         '
