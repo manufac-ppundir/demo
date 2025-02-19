@@ -36,23 +36,23 @@ jobs:
         chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
         # Remove old backup image if exists
-        docker rmi finstat-api:backup || true
+        docker rmi testing-ci-cd:backup || true
 
         # Promote current latest to backup
-        docker tag finstat-api:latest finstat-api:backup || true
+        docker tag testing-ci-cd:latest testing-ci-cd:backup || true
 
         # Remove old backup container if exists
-        docker rm -f finstat-api-backup || true
+        docker rm -f testing-ci-cd-backup || true
 
         # Promote current container to backup
-        docker stop finstat-api-latest || true
-        docker rename finstat-api-latest finstat-api-backup || true
+        docker stop testing-ci-cd-latest || true
+        docker rename testing-ci-cd-latest testing-ci-cd-backup || true
 
         # Load new image as latest
-        docker load -i /home/ec2-user/finstat-api.tar
+        docker load -i /home/ec2-user/testing-ci-cd.tar
       
         # Start new container from loaded image
-        docker run -d --name finstat-api-latest -p 1025:8000 finstat-api:latest
+        docker run -d --name testing-ci-cd-latest -p 1025:8000 testing-ci-cd:latest
 
         # # Backup current image
         # docker tag testing-ci-cd:latest testing-ci-cd:backup || true
