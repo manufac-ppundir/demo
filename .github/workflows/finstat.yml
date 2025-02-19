@@ -20,11 +20,11 @@ jobs:
         HOST: ${{ secrets.EC2_HOST }}
         USER: ${{ secrets.EC2_USER }}
       run: |
-        docker build -t finstat-api:latest ./api
-        docker save -o ./finstat-api.tar finstat-api:latest
+        docker build -t testing-ci-cd:latest ./api
+        docker save -o ./testing-ci-cd.tar testing-ci-cd:latest
         echo "$PRIVATE_KEY" > github-ec2.pem
         chmod 600 github-ec2.pem
-        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem finstat-api.tar ${USER}@${HOST}:/home/ec2-user/
+        scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i github-ec2.pem testing-ci-cd.tar ${USER}@${HOST}:/home/ec2-user/
     
     - name: Deploy to EC2
       env:
@@ -36,10 +36,10 @@ jobs:
         chmod 600 github-ec2.pem
         ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} '
 
-        docker stop finstat-api-latest
-        docker rm -f finstat-api-backup
-        docker rename finstat-api-latest finstat-api-backup
-        docker load -i /home/ec2-user/finstat-api.tar
-        docker run -d --name finstat-api-latest -p 1025:8000 finstat-api:latest
+        docker stop testing-ci-cd-latest
+        docker rm -f testing-ci-cd-backup
+        docker rename testing-ci-cd-latest testing-ci-cd-backup
+        docker load -i /home/ec2-user/testing-ci-cd.tar
+        docker run -d --name testing-ci-cd-latest -p 1025:8000 testing-ci-cd:latest
         docker ps
         '
