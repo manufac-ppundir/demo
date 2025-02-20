@@ -7,7 +7,6 @@ on:
       environment:
         description: 'Environment to deploy to'
         required: true
-        default: 'main'
 
 jobs:
   deploy:
