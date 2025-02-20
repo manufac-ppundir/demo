@@ -48,7 +48,7 @@ jobs:
 
         # Load new image as latest
         docker load -i /home/ec2-user/test-ci-cd.tar
-      
+        docker images
         # Start new container from loaded image
         docker run -d --name test-ci-cd-latest -p 1025:8000 test-ci-cd:latest
         
