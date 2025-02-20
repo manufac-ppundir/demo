@@ -39,9 +39,6 @@ jobs:
         # Promote current latest to backup
         docker tag test-ci-cd:latest test-ci-cd:backup || true
 
-        # Remove old backup container if exists
-        docker rm -f test-ci-cd-backup || true
-
         # Promote current container to backup
         docker stop test-ci-cd-latest || true
         docker rename test-ci-cd-latest test-ci-cd-backup || true
