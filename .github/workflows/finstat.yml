@@ -2,12 +2,6 @@ name: Backend CI/CD Workflow
 
 on:
   workflow_dispatch:
-    inputs:
-      # Ref: https://docs.github.com/en/actions/managing-workflow-runs-and-deployments/managing-deployments/managing-environments-for-deployment#environment-variables
-      environment:
-        description: 'Environment to deploy to'
-        required: true
-        default: "production"
 
 jobs:
   deploy:
