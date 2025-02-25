@@ -1,0 +1,24 @@
+name: EC2 Restart CI/CD Workflow
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Deploy to EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOST: ${{ secrets.EC2_HOST }}
+          USER: ${{ secrets.EC2_USER }}
+        run: |
+          echo "$PRIVATE_KEY" > github-ec2.pem
+          chmod 600 github-ec2.pem
+          # Ref: https://superuser.com/a/385795
+          ssh -o StrictHostKeyChecking=no -i github-ec2.pem ${USER}@${HOST} ' # Connecting with server
+          # Starting execution in EC2 server
+          
+          docker start finstat-api-latest
+          '
